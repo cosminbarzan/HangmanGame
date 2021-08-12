@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hangman</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./script.js" defer></script>
+    <link rel="icon" type="image/png" href="./hangman.png">
+</head>
+
+<body>
+    <header>
+        <h1>HANGMAN</h1>
+    </header>
+    <div id="game-options">
+        <select name="" id="categories">
+            <option value="" disabled selected>Select category</option>
+            <option value="animals">Animals</option>
+            <option value="jobs">Jobs</option>
+            <option value="sports">Sports</option>
+        </select>
+        <select name="" id="level">
+            <option value="" disabled selected>Select level</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+        <button id="start" onclick="startGame()">Start</button>
+    </div>
+    <div id="container"></div>
+    <div id="display-text">
+        <p id="lives"></p>
+    </div>
+    <div id="buttons">
+        <div id="first-line"></div>
+        <div id="second-line"></div>
+        <div id="third-line"></div>
+    </div>
+    <footer>
+        <p id="game-status">game status</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,202 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    /* background-color: #ddd; */
+    background-image: url('./background3.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% auto; 
+    height: auto;
+    padding: 1em 2em 0 2em;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.guess {
+    margin-left: 5px;
+    font-size: 1.4em;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    background-color: #aaa;
+    border-radius: 00.1em;
+}
+
+.bounce {
+    animation: animate 1.5s linear;
+}
+
+@keyframes animate 
+{
+    0%
+    {
+        transform: translateY(0px);
+    }
+    10%
+    {
+        transform: translateY(-30px);
+    }
+    15%
+    {
+        transform: translateY(0px);
+    }
+    25%
+    {
+        transform: translateY(-20px);
+    }
+    30%
+    {
+        transform: translateY(0px);
+    }
+    40%
+    {
+        transform: translateY(-10px);
+    }
+    45%
+    {
+        transform: translateY(0px);
+    }
+    100%
+    {
+        transform: translateY(0px);
+    }
+}
+
+h1 {
+    text-align: center;
+    /* text-shadow: -1px -1px 0 #eee; */
+    color: #000;
+    text-shadow: 2px 2px 4px whitesmoke;
+}
+
+#buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3em;
+}
+
+#letter {
+    margin-left: 10px;
+    font-size: 2em;
+    background-color: #aaa;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0.1em;
+}
+
+#letter:hover {
+    background-color: red;
+    color: #aaa;
+    transform: translateX(-1.5%);
+}
+
+.active {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+#display-text {
+    color: red;
+    margin-top: 3em;;
+}
+
+#game-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3em;
+}
+
+#game-status {
+    text-align: center;
+    font-size: 2em;
+    display: none;
+}
+
+#game-status:hover {
+    display: ''; 
+}
+
+#lives {
+    text-align: center;
+    font-size: 2em;
+}
+
+#first-line {
+    display: flex;
+    margin-bottom: 1em;
+}
+
+#second-line {
+    display: flex;
+    margin-bottom: 1em;
+}
+
+#third-line {
+    display: flex;
+}
+
+button {
+    font-size: 16px;
+    font-weight: bold;
+    width: 160px;
+    height: 30px;
+    border-radius: 0.3em;
+    background-color: #aaa;
+    padding: 0;
+}
+
+#level {
+    font-size: 16px;
+    font-weight: bold;
+    width: 160px;
+    height: 30px;
+    border-radius: 0.3em;
+    margin-bottom: 5px;
+    text-align-last: center;
+    background-color: #aaa;
+}
+
+#categories {
+    font-size: 16px;
+    font-weight: bold;
+    width: 160px;
+    height: 30px;
+    border-radius: 0.3em;
+    margin-bottom: 5px;
+    text-align-last: center;
+    background-color: #aaa;
+}
+
+button:hover {
+    background-color: red;
+    color: #aaa;
+    cursor: pointer;
+}
+
+#level:hover {
+    background-color: red;
+    color: #aaa;
+    cursor: pointer;
+}
+
+#categories:hover {
+    background-color: red;
+    color: #aaa;
+    cursor: pointer;
+}
+
+option {
+    background-color: #aaa;
+    color: black    ;
+}
