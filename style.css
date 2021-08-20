@@ -248,8 +248,8 @@ footer {
 
 .score-container {
     position: absolute;
-    width: 80px;
-    height: 60px;
+    width: 90px;
+    height: 70px;
     border-radius: 10%;
     background-color: #aaa;
     margin-left: 10px;
@@ -257,6 +257,7 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-weight: bold;
 }
 
 .hide {
