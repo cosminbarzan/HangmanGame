@@ -52,6 +52,7 @@ function generateWord(category) {
 }
 
 function generateSpacesForLetters(word) {
+    console.log('GUESS CONTAINER', container);
     for (var i = 0; i < word.length; i++) {
         const guess = document.createElement('div');
         guess.classList.add('guess');
@@ -62,39 +63,98 @@ function generateSpacesForLetters(word) {
     }
 }
 
+function addHeartsForLives(lives) {
+    const heartsContainer = document.querySelector('.hearts');
+
+    let heartsElements = ``;
+
+    for (let i = 0; i < lives; i++) {
+        heartsElements += `<li><a href="#"><i class="fa fa-heart"></i></a></li>`;
+    }
+
+    heartsContainer.innerHTML = heartsElements;
+}
+
+
+
+function createHeartsStatusArray(lives) {
+    let heartsStatus = new Array(lives).fill(1);
+
+    return heartsStatus;
+}
+
 const startButton = document.getElementById('start');
 
 const container = document.getElementById("container");
 console.log(container);
 
+let scoreContainer = document.querySelector('.score');
+
 let word = '';
 let remainingLetters = 0;
+let mistakes = 0;
+let round = 1;
+let category = '';
+let heartsStatus = '';
+let answerLetters = '';
+let score = 0;
 
 function startGame() {
-    const gameOptionsDiv = document.getElementById('game-options');
+    if (round === 1) {
+        minutes = 0;
+        seconds = 0;
+        let time = '';
+        document.querySelector('.score-container').classList.remove('hide');
+        const timer = document.querySelector('.timer');
+        setInterval(() => {
+            if (seconds === 59) {
+                seconds = -1;
+                minutes++;
+            }
+            seconds++;
+            if (minutes === 0) {
+                time = seconds + 's';
+            }
+            else {
+                time = minutes + 'm ' + seconds + 's';
+            }
+            timer.innerText = time;
+        }, 1000);
 
-    gameOptionsDiv.style.display = 'none';
 
-    const category = document.getElementById('categories').value;
-    const level = document.getElementById('level').value;
-    lives = livesPerLevel[level];
+        const gameOptionsDiv = document.getElementById('game-options');
 
-    updateLivesNumber(lives);
+        gameOptionsDiv.style.display = 'none';
+
+        category = document.getElementById('categories').value;
+        const level = document.getElementById('level').value;
+        lives = livesPerLevel[level];
+
+        addHeartsForLives(lives);
+
+        const hangmanPicture = document.querySelector('.picture');
+
+        hangmanPicture.classList.remove('hide-picture');
+
+        hangmanPicture.src = './images/hangman0.png';
+
+        heartsStatus = createHeartsStatusArray(lives);
+        console.log('status', heartsStatus);
+    }
+
+    //updateLivesNumber(lives, heartsStatus);
 
     word = generateWord(category);
 
     remainingLetters = word.length;
 
-    var answerLetters = new Array(word.length);
+    answerLetters = new Array(word.length).fill('');
 
-    for (var i = 0; i < word.length; i++) {
-        answerLetters[i] = '';
-    }
 
     // document.onkeydown = keyPressed;
 
     document.addEventListener('keydown', event => {
-        keyPressed(event, answerLetters);
+        keyPressed(event, answerLetters, heartsStatus);
     });
 
     generateSpacesForLetters(word);
@@ -102,7 +162,7 @@ function startGame() {
     const guesses = document.querySelectorAll(".guess");
     console.log(guesses);
 
-    addClickEventOnLetter(guesses, answerLetters);
+    addClickEventOnLetter(guesses, answerLetters, heartsStatus);
 }
 
 /////
@@ -114,7 +174,7 @@ console.log(word);
 
 
 function checkSelectedLetter(lives, guessLetter, answerLetters) {
-    var matches = 0;
+    let matches = 0;
     console.log('rem lett', remainingLetters);
     console.log('WORD CHECK ', answerLetters);
 
@@ -123,6 +183,8 @@ function checkSelectedLetter(lives, guessLetter, answerLetters) {
             if (word[j] === guessLetter && guessLetter != answerLetters[j]) {
                 answerLetters[j] = guessLetter;
                 remainingLetters--;
+                score += 10;
+                scoreContainer.innerText = score;
                 matches = 1;
                 console.log("playing...", remainingLetters);
             }
@@ -144,6 +206,8 @@ function updateAnswerWord(guesses, answerLetters) {
 
     if (matchPosition != -1) {
         guesses[matchPosition].classList.add('bounce');
+        var audio = new Audio('https://notification-sounds.com/soundsfiles/Correct-answer.mp3');
+        audio.play();
     }
 }
 
@@ -153,14 +217,38 @@ const letterCodes = {
     89: 'y', 90: 'z'
 }
 
-const isSelected = {
+let isSelected = {
     'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0,
     'i': 0, 'j': 0, 'k': 0, 'l': 0, 'm': 0, 'n': 0, 'o': 0, 'p': 0,
     'q': 0, 'r': 0, 's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0,
     'y': 0, 'z': 0
 }
 
-function keyPressed(key, answerLetters) {
+function startNewRound() {
+    mistakes = 0;
+    remainingLetters = 0;
+
+    container.innerHTML = '';
+
+    const allLetters = document.querySelectorAll('#letter');
+
+    allLetters.forEach((letter) => {
+        letter.classList.remove('active');
+    })
+
+    isSelected = {
+        'a': 0, 'b': 0, 'c': 0, 'd': 0, 'e': 0, 'f': 0, 'g': 0, 'h': 0,
+        'i': 0, 'j': 0, 'k': 0, 'l': 0, 'm': 0, 'n': 0, 'o': 0, 'p': 0,
+        'q': 0, 'r': 0, 's': 0, 't': 0, 'u': 0, 'v': 0, 'w': 0, 'x': 0,
+        'y': 0, 'z': 0
+    }
+
+    setTimeout(updateHangmanPicture(), 1000);
+
+    startGame();
+}
+
+function keyPressed(key, answerLetters, heartsStatus) {
     // const gameStatusText = document.getElementById('game-status');
     // gameStatusText.style.display = 'block';
 
@@ -177,23 +265,65 @@ function keyPressed(key, answerLetters) {
 
         let matches = checkSelectedLetter(lives, letter, answerLetters);
 
+        if (matches === 0) {
+            mistakes++;
+            score -= 10;
+            scoreContainer.innerText = score;
+        }
+
         const guesses = document.querySelectorAll(".guess");
 
         updateAnswerWord(guesses, answerLetters);
 
-        lives--;
-        lives += matches;
 
-        updateLivesNumber(lives);
+        if (mistakes === 6) {
+            for (let i = 0; i < heartsStatus.length; i++) {
+                if (heartsStatus[i] == 1) {
+                    heartsStatus[i] = 0;
+                    break;
+                }
+            }
+
+            lives--;
+        }
+        // lives--;
+        // lives += matches;
+
+        updateLivesNumber(lives, heartsStatus);
 
         checkEndGame(lives);
     }
 }
 
-function updateLivesNumber(lives) {
+function updateHangmanPicture() {
+    document.querySelector('.picture').src = './images/hangman' + mistakes + '.png';
+}
+
+function updateLivesNumber(lives, heartsStatus) {
     if (lives >= 0) {
-        const livesText = document.getElementById('lives');
-        livesText.innerText = 'You have ' + lives + ' lives';
+        // const livesText = document.getElementById('lives');
+        // livesText.innerText = 'You have ' + lives + ' lives';
+
+        updateHangmanPicture();
+
+        if (mistakes === 6) {
+            let hearts = document.querySelectorAll('.fa-heart');
+            console.log('hearts', hearts);
+
+            console.log('heeeeeeeere', heartsStatus);
+
+            for (let i = 0; i < heartsStatus.length; i++) {
+                if (heartsStatus[i] == 0) {
+                    hearts[i].classList.add('inactive');
+                }
+            }
+
+            round++;
+
+            setTimeout(() => {
+                startNewRound()
+            }, 1500);
+        }
     }
 }
 
@@ -201,18 +331,37 @@ function checkEndGame(lives) {
     console.log('lives end ', lives);
     console.log('rem lett end ', remainingLetters);
 
-    if (lives == 0) {
+    let footer = document.querySelector('footer');
+    const playAgainBtn = document.createElement('button');
+    playAgainBtn.innerText = 'Play Again';
+    playAgainBtn.addEventListener('click', () => {
+        window.location.reload();
+    })
+
+    if (lives === 0) {
+        footer.appendChild(playAgainBtn);
+    }
+
+    if (mistakes === 6) {
         const gameStatusText = document.getElementById('game-status');
         gameStatusText.style.display = 'block';
-        gameStatusText.innerText = 'Game over! Correct answer: ' + word;
+        gameStatusText.innerText = 'The answer was: ' + word;
         gameStatusText.style.color = 'red';
+
+        console.log('FOOTER', footer);
+        console.log('AGAIN', playAgainBtn);
     }
     else {
         if (remainingLetters == 0) {
+            score += 100;
+            scoreContainer.innerText = score;
+
             const gameStatusText = document.getElementById('game-status');
             gameStatusText.style.display = 'block';
             gameStatusText.innerText = 'You win!';
             gameStatusText.style.color = 'green';
+
+            footer.appendChild(playAgainBtn);
         }
     }
 }
@@ -266,7 +415,7 @@ function generateAlphabetLetters() {
 generateAlphabetLetters();
 // }
 
-function addClickEventOnLetter(guesses, answerLetters) {
+function addClickEventOnLetter(guesses, answerLetters, heartsStatus) {
     let letters = document.querySelectorAll('#letter');
 
     letters.forEach(letter => {
@@ -284,7 +433,7 @@ function addClickEventOnLetter(guesses, answerLetters) {
             lives--;
             lives += matches;
 
-            updateLivesNumber(lives);
+            updateLivesNumber(lives, heartsStatus);
 
             checkEndGame(lives);
 

@@ -6,15 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./style.css">
     <script src="./script.js" defer></script>
     <link rel="icon" type="image/png" href="./hangman.png">
 </head>
 
 <body>
+    <audio src="./Correct-answer.mp3"></audio>
     <header>
+        <ul class="hearts">
+            <!-- <li><a href="#"><i class="fa fa-heart inactive"></i></a></li> -->
+        </ul>
         <h1>HANGMAN</h1>
     </header>
+    <span class="score-container hide">
+        <span class="timer">0s</span>
+        <span class="score">Score</span>
+    </span>
     <div id="game-options">
         <select name="" id="categories">
             <option value="" disabled selected>Select category</option>
@@ -30,10 +39,10 @@
         </select>
         <button id="start" onclick="startGame()">Start</button>
     </div>
-    <div id="container"></div>
-    <div id="display-text">
-        <p id="lives"></p>
+    <div id="hangman-pic">
+        <img src="" alt="Hangman Picture" class="picture hide-picture">
     </div>
+    <div id="container"></div>
     <div id="buttons">
         <div id="first-line"></div>
         <div id="second-line"></div>
@@ -41,6 +50,7 @@
     </div>
     <footer>
         <p id="game-status">game status</p>
+        <!-- <button onclick="window.location.reload()">Play again</button> -->
     </footer>
 </body>
 

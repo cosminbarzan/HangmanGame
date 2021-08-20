@@ -9,7 +9,9 @@ body {
     background-repeat: no-repeat;
     background-size: 100% auto; 
     height: auto;
-    padding: 1em 2em 0 2em;
+    /* padding: 1em 2em 0 2em; */
+    padding: 0;
+    margin: 0;
 }
 
 #container {
@@ -17,6 +19,7 @@ body {
     flex-direction: row;
     justify-content: center;
     font-size: 16px;
+    margin-top: 1em;
 }
 
 .guess {
@@ -105,9 +108,17 @@ h1 {
     pointer-events: none;
 }
 
-#display-text {
-    color: red;
-    margin-top: 3em;;
+#hangman-pic {
+    text-align: center;
+    /* margin-top: 3em; */
+}
+
+.picture {
+    height: 200px;
+}
+
+.hide-picture {
+    display: none;
 }
 
 #game-options {
@@ -123,9 +134,9 @@ h1 {
     display: none;
 }
 
-#game-status:hover {
+/* #game-status:hover {
     display: ''; 
-}
+} */
 
 #lives {
     text-align: center;
@@ -199,4 +210,55 @@ button:hover {
 option {
     background-color: #aaa;
     color: black    ;
+}
+
+.hearts {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /* margin: 1rem 0 3rem 0; */
+}
+
+.hearts li {
+    margin: 0 0.3em;
+}
+
+.hearts li i {
+    color: red;
+}
+
+.hearts li i:hover {
+    color: #aaa;
+}
+
+.inactive {
+    color: #aaa;
+    opacity: 0.2;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+footer {
+    text-align: center;
+}
+
+.score-container {
+    position: absolute;
+    width: 80px;
+    height: 60px;
+    border-radius: 10%;
+    background-color: #aaa;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hide {
+    display: none;
 }
